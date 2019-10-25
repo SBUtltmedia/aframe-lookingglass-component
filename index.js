@@ -19,54 +19,69 @@ AFRAME.registerComponent('lookingglass', {
    * Called once when component is attached. Generally for initial setup.
    */
   init: function() {
-     var scene = document.querySelector('a-scene').object3D;
-     var renderer = this.el.renderer;
+    var scene = this.el.sceneEl.object3D;
+    var renderer = this.el.renderer;
+    // var camera = this.el.camera;
 
-     var cameraEl = document.querySelector('a-entity[camera]');
-     if (!cameraEl) {
-       cameraEl = document.querySelector('a-camera');
-     }
-     console.log(scene, renderer, cameraEl)
+    var camera = new THREE.PerspectiveCamera(12.5, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0, 0, 20);
+    this.el.camera = null;
 
-     var camera = new THREE.PerspectiveCamera(13.5, window.innerWidth / window.innerHeight, 0.1, 1000);
-     camera.position.set(0, 0, 20);
-     console.log(camera)
+    console.log(scene, camera, renderer);
 
-     // scene.onAfterRender = (renderer, scene, camera)=> {   this.holoplay.render() }
-     // console.log(cameraEl)
-     
-     document.querySelector('#cameraHolder').setObject3D('camera', camera);
-     cameraEl.parentNode.removeChild(cameraEl);
-      //renderer = console.log()
-     this.holoplay = new HoloPlay(scene, camera, renderer);
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-     // var holoplay = this.holoplay
-   //   var oldRender = this.el.renderer.render;
-   //   this.el.renderer.render = function() {
-   //     //  console.log(arguments[1].type)
-   //
-   //     if (arguments[1].type == "PerspectiveCamera") {
-   //       oldRender.apply(this, arguments)
-   //
-   //     } else {
-   //       holoplay.render()
-   //     }
-   // }
+    // var scene = document.querySelector('a-scene').object3D;
+    // var renderer = this.el.renderer;
+    //
+    // var cameraEl = document.querySelector('a-entity[camera]');
+    // if (!cameraEl) {
+    //   cameraEl = document.querySelector('a-camera');
+    // }
+    // console.log(scene, renderer, cameraEl)
 
-    //  // scene.remove(cameraEl.getObject3D('camera'))
+    // var camera = new THREE.PerspectiveCamera(13.5, window.innerWidth / window.innerHeight, 0.1, 1000);
+    // camera.position.set(0, 0, 20);
+    // console.log(camera)
+
+    // scene.onAfterRender = (renderer, scene, camera)=> {   this.holoplay.render() }
+    // console.log(cameraEl)
+
+    // document.querySelector('#cameraHolder').setObject3D('camera', camera);
+    // cameraEl.parentNode.removeChild(cameraEl);
+
+    // renderer = console.log()
+    this.holoplay = new HoloPlay(scene, camera, renderer);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    // var holoplay = this.holoplay
+    //   var oldRender = this.el.renderer.render;
+    //   this.el.renderer.render = function() {
+    //     //  console.log(arguments[1].type)
+    //
+    //     if (arguments[1].type == "PerspectiveCamera") {
+    //       oldRender.apply(this, arguments)
+    //
+    //     } else {
+    //       holoplay.render()
+    //     }
+    // }
+
+    // scene.remove(cameraEl.getObject3D('camera'))
 
     // var tmpRender= renderer.render().clone()
     // renderer.render= ()=>{
     //   tmpRender()
 
     // this.holoplay.render()
-    // }//scene.onAfterRender = (renderer, scene, camera)=> {   this.holoplay.render() }
+    // scene.onAfterRender = (renderer, scene, camera)=> {   this.holoplay.render() }
     //     var scene2 = document.querySelector('a-scene').getAttribute('lookingglass');
     //
     //         // THREE may swap the camera used for the rendering if in VR, so we pass it to tock
     //         if (self.isPlaying) { self.tock(self.time, self.delta, camera); }
     //       };
-    //console.log(this.el.renderer);
+    // console.log(this.el.renderer);
   },
 
   /**
@@ -74,13 +89,6 @@ AFRAME.registerComponent('lookingglass', {
    * Generally modifies the entity based on the data.
    */
   update: function() {},
-
-  /**
-   *
-   */
-  tick: function() {
-    this.holoplay.render();
-  },
 
   /**
    * Called when a component is removed (e.g., via removeAttribute).
@@ -91,7 +99,9 @@ AFRAME.registerComponent('lookingglass', {
   /**
    * Called on each scene tick.
    */
-  // tick: function (t) { },
+   tick: function() {
+     this.holoplay.render();
+   },
 
   /**
    * Called when entity pauses.
